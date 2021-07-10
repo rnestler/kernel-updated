@@ -107,13 +107,15 @@ Usage:
   reboot-arch-btw --version
 
 Options:
-  -h --help     Show this screen.
-  --version     Show version.
+  -h --help                 Show this screen.
+  --version                 Show version.
+  --disable-notification    Disable desktop notification
 ";
 
 #[derive(Debug, Deserialize)]
 struct Args {
     flag_version: bool,
+    flag_disable_notification: bool,
 }
 
 fn main() {
@@ -158,7 +160,7 @@ fn main() {
     println!(" running:   {}", running_kernel_version);
 
     let should_reboot = !installed_kernel.version_matches(&running_kernel_version);
-    if should_reboot {
+    if should_reboot && !args.flag_disable_notification {
         println!("You should reboot arch btw!");
         Notification::new()
             .summary("Reboot arch btw")
